@@ -28,7 +28,6 @@ jobs:
 
       - name: Set up database
         run: |
-          cp config/database.yml.sqlite config/database.yml
           bin/rails db:create db:schema:load
 
       - name: Run RSpec
