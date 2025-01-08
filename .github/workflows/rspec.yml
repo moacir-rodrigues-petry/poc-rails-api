@@ -12,21 +12,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      db:
-        image: postgres:latest
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: my_api_app_test
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -43,10 +28,8 @@ jobs:
 
       - name: Set up database
         run: |
-          cp config/database.yml.ci config/database.yml
+          cp config/database.yml.sqlite config/database.yml
           bin/rails db:create db:schema:load
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/my_api_app_test
 
       - name: Run RSpec
         run: |
